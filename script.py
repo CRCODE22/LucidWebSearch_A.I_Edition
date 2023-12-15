@@ -236,11 +236,11 @@ def input_modifier(assistant_input, state):
     global additional_links_flag, fetch_length  # Use the global variable
     if search_access:
 
-        assistant_msg = ""
-        if assistant_msg.lower().startswith("search"):
+        
+        if assistant_input.lower().startswith("search"):
             shared.processing_message = "*Searching online...*"
             # Split the input at the colon and use the part before the colon
-            query = assistant_msg.split("**")[0].replace("search", "").strip()
+            query = assistant_input.split("**")[0].replace("search", "").strip()
             state["context"] = "The answer to Assistant question is provided to you in a generated content. Give a truthful and correct answer. Answer the question and do not apologize"
             search_data = extract_content_from_url(query)
             assistant_msg = f"Assistant question: {assistant_msg}\n Extracted content: {search_data}"
@@ -249,10 +249,10 @@ def input_modifier(assistant_input, state):
             return str(assistant_msg)
         shared.processing_message = "*Typing...*"
         
-        if assistant_msg.lower().startswith("additional links"):
+        if assistant_input.lower().startswith("additional links"):
             additional_links_flag = True
             shared.processing_message = "*Searching online...*"
-            query = assistant_msg.replace("additional links", "").strip()
+            query = assistant_input.replace("additional links", "").strip()
             state["context"] = "You are given a list of hyperlinks, choose up to 5 that you think will best answer the Assistant's question and do not apologize"
             search_data = extract_content_from_url_links(query)
             assistant_msg = f"Assistant request: {assistant_msg}\n Extracted content: {search_data}"
@@ -261,7 +261,7 @@ def input_modifier(assistant_input, state):
             return str(assistant_prompt)
         shared.processing_message = "*Typing...*"
         
-        if assistant_msg.lower().startswith("please expand"):
+        if assistant_input.lower().startswith("please expand"):
             shared.processing_message = "*Searching online...*"
             
             with open(additional_links_output_path, 'r', encoding='utf-8') as file:
