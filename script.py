@@ -234,21 +234,25 @@ def extract_urls_from_text(text):
 additional_links_flag = False  # Global variable to track the "additional links" condition
 def input_modifier(assistant_input, state):
     global additional_links_flag, fetch_length  # Use the global variable
-    if search_access:
 
-        
-        if assistant_input.lower().startswith("search"):
-            print("Search command detected")
+    # Normalize assistant input to lowercase for consistent comparison
+    input_lower = assistant_input.lower()
+
+    if search_access:
+        if input_lower.startswith("search"):
+            print("Search command detected")  # Debugging statement
             shared.processing_message = "*Searching online...*"
-            # Split the input at the colon and use the part before the colon
-            query = assistant_input.split("**")[0].replace("search", "").strip()
+            # Split the input at the command and use the part after the command
+            query = assistant_input[len("search"):].strip()
             state["context"] = "The answer to Assistant question is provided to you in a generated content. Give a truthful and correct answer. Answer the question and do not apologize"
             search_data = extract_content_from_url(query)
-            assistant_msg = f"Assistant question: {assistant_msg}\n Extracted content: {search_data}"
+            assistant_msg = f"Assistant question: {assistant_input}\n Extracted content: {search_data}"
             assistant_msg = assistant_msg[:fetch_length]
-            print(assistant_msg)
             return str(assistant_msg)
+        
         shared.processing_message = "*Typing...*"
+        # Rest of the code logic for other commands...
+
         
         if assistant_input.lower().startswith("additional links"):
             print("additional links command detected")
