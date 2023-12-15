@@ -232,7 +232,7 @@ def extract_urls_from_text(text):
 
 
 additional_links_flag = False  # Global variable to track the "additional links" condition
-def input_modifier(user_input, state):
+def input_modifier(assistant_input, state):
     global additional_links_flag, fetch_length  # Use the global variable
     if search_access:
 
@@ -241,7 +241,7 @@ def input_modifier(user_input, state):
             shared.processing_message = "*Searching online...*"
             # Split the input at the colon and use the part before the colon
             query = assistant_msg.split("**")[0].replace("search", "").strip()
-            state["context"] = "The answer to User question is provided to you in a generated content. Give a truthful and correct answer. Answer the question and do not apologize"
+            state["context"] = "The answer to Assistant question is provided to you in a generated content. Give a truthful and correct answer. Answer the question and do not apologize"
             search_data = extract_content_from_url(query)
             assistant_msg = f"Assistant question: {assistant_msg}\n Extracted content: {search_data}"
             assistant_msg = assistant_msg[:fetch_length]
@@ -253,15 +253,15 @@ def input_modifier(user_input, state):
             additional_links_flag = True
             shared.processing_message = "*Searching online...*"
             query = assistant_msg.replace("additional links", "").strip()
-            state["context"] = "You are given a list of hyperlinks, choose up to 5 that you think will best answer the Users' question and do not apologize"
+            state["context"] = "You are given a list of hyperlinks, choose up to 5 that you think will best answer the Assistant's question and do not apologize"
             search_data = extract_content_from_url_links(query)
             assistant_msg = f"Assistant request: {assistant_msg}\n Extracted content: {search_data}"
             assistant_msg = assistant_msg[:fetch_length]
             return str(assistant_msg)
-            return str(user_prompt)
+            return str(assistant_prompt)
         shared.processing_message = "*Typing...*"
         
-        if user_input.lower().startswith("please expand"):
+        if assistant_msg.lower().startswith("please expand"):
             shared.processing_message = "*Searching online...*"
             
             with open(additional_links_output_path, 'r', encoding='utf-8') as file:
@@ -278,16 +278,16 @@ def input_modifier(user_input, state):
             with open(output_txt_path, 'r', encoding='utf-8') as file:
                 search_data = file.read()
 
-            user_prompt = f"User request: {user_input}\n Extracted content, remove extra formatting when returning markdown text, return simple markdown when rendering text that is provided in markdown and do not apologize: {search_data}"
-            user_prompt = user_prompt[:fetch_length]
-            return str(user_prompt)
+            assistant_prompt = f"Assistant request: {assistant_input}\n Extracted content, remove extra formatting when returning markdown text, return simple markdown when rendering text that is provided in markdown and do not apologize: {search_data}"
+            assistant_prompt = assistant_prompt[:fetch_length]
+            return str(assistant_prompt)
 
         shared.processing_message = "*Typing...*"
         
         
-        if user_input.lower().startswith("go to "):
+        if assistant_input.lower().startswith("go to "):
             shared.processing_message = "*Searching online...*"
-            query = user_input.replace("go to ", "").strip() + " "  # Adding a space at the end
+            query = assistant_input.replace("go to ", "").strip() + " "  # Adding a space at the end
             urls = extract_urls_from_text(query)
 
             should_append = len(urls) > 1
@@ -300,12 +300,12 @@ def input_modifier(user_input, state):
             with open(output_txt_path, 'r', encoding='utf-8') as file:
                 search_data = file.read()
 
-            user_prompt = f"User request: {user_input}\n Extracted content and do not apologize: {search_data}"
-            user_prompt = user_prompt[:fetch_length]
-            return str(user_prompt)
+            assistant_prompt = f"Assistant request: {assistant_input}\n Extracted content and do not apologize: {search_data}"
+            assistant_prompt = assistant_prompt[:fetch_length]
+            return str(assistant_prompt)
 
         shared.processing_message = "*Typing...*"
-    return user_input
+    return assistant_input
     
 # Gradio UI code...
 # You can include your Gradio interface setup here
@@ -332,7 +332,7 @@ def ui():
           &nbsp;&nbsp;&nbsp;&nbsp;Step 2: enter this into a seperate Windows command prompt (change the chrome.exe location if it is installed somewhere different than the example) --incognito can be added at the end to open in that mode: `"C:\Program Files\Google\Chrome\Application\chrome.exe" --remote-debugging-port=9222`  
         - **Enable Google Search**: Toggle this to activate or deactivate the web search feature.
         - **Web Search Fetch Length (characters)**: Specify the maximum length of content to fetch (in characters). This helps in limiting the response for large web pages.  
-        - **The workflow follows this sequence of trigger statments that must start the user input**  
+        - **The workflow follows this sequence of trigger statments that must start the assistant input**  
           &nbsp;&nbsp;&nbsp;&nbsp;`search`  
           &nbsp;&nbsp;&nbsp;&nbsp;`additional links`  
           &nbsp;&nbsp;&nbsp;&nbsp;`please expand`  
@@ -374,7 +374,7 @@ def ui():
 
         ### Limitations
         - Some websites may not be accessible or properly formatted for data extraction.
-        - The maximum character limit for website digestion is set by the user, if information you need is at the very end of a long web page try different sites or changing your search criteria.
+        - The maximum character limit for website digestion is set by the assistant, if information you need is at the very end of a long web page try different sites or changing your search criteria.
 
         ### Troubleshooting
         - If you encounter issues, ensure you closed all previous Chrome instances before loading it in debugging mode.
