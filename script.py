@@ -237,16 +237,16 @@ def input_modifier(user_input, state):
     if search_access:
 
         
-        if user_input.lower().startswith("search"):
+        if assistant_msg.lower().startswith("search"):
             shared.processing_message = "*Searching online...*"
             # Split the input at the colon and use the part before the colon
-            query = user_input.split("**")[0].replace("search", "").strip()
+            query = assistant_msg.split("**")[0].replace("search", "").strip()
             state["context"] = "The answer to User question is provided to you in a generated content. Give a truthful and correct answer. Answer the question and do not apologize"
             search_data = extract_content_from_url(query)
-            user_prompt = f"User question: {user_input}\n Extracted content: {search_data}"
-            user_prompt = user_prompt[:fetch_length]
-            print(user_prompt)
-            return str(user_prompt)
+            assistant_msg = f"Assistant question: {assistant_msg}\n Extracted content: {search_data}"
+            assistant_msg = assistant_msg[:fetch_length]
+            print(assistant_msg)
+            return str(assistant_msg)
         shared.processing_message = "*Typing...*"
         
         if user_input.lower().startswith("additional links"):
