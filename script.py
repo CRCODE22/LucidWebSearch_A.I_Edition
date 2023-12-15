@@ -249,15 +249,15 @@ def input_modifier(user_input, state):
             return str(assistant_msg)
         shared.processing_message = "*Typing...*"
         
-        if user_input.lower().startswith("additional links"):
+        if assistant_msg.lower().startswith("additional links"):
             additional_links_flag = True
             shared.processing_message = "*Searching online...*"
-            query = user_input.replace("additional links", "").strip()
+            query = assistant_msg.replace("additional links", "").strip()
             state["context"] = "You are given a list of hyperlinks, choose up to 5 that you think will best answer the Users' question and do not apologize"
             search_data = extract_content_from_url_links(query)
-            user_prompt = f"User request: {user_input}\n Extracted content: {search_data}"
-            user_prompt = user_prompt[:fetch_length]
-            print (user_prompt)
+            assistant_msg = f"Assistant request: {assistant_msg}\n Extracted content: {search_data}"
+            assistant_msg = assistant_msg[:fetch_length]
+            return str(assistant_msg)
             return str(user_prompt)
         shared.processing_message = "*Typing...*"
         
