@@ -1,4 +1,5 @@
 # LucidWebSearch (now with nougat ... OCR)
+CRCODE22 The original extension lets the user be in control I want the AI to be in control and be in charge of the searches it does without the user needing to write the commands.
 (I will be adding full cpu mode soon)  
 https://github.com/facebookresearch/nougat  
 A web search extension for Oobabooga's text-generation-webui https://github.com/oobabooga/text-generation-webui
