@@ -238,6 +238,7 @@ def input_modifier(assistant_input, state):
 
         
         if assistant_input.lower().startswith("search"):
+            print("Search command detected")
             shared.processing_message = "*Searching online...*"
             # Split the input at the colon and use the part before the colon
             query = assistant_input.split("**")[0].replace("search", "").strip()
@@ -250,6 +251,7 @@ def input_modifier(assistant_input, state):
         shared.processing_message = "*Typing...*"
         
         if assistant_input.lower().startswith("additional links"):
+            print("additional links command detected")
             additional_links_flag = True
             shared.processing_message = "*Searching online...*"
             query = assistant_input.replace("additional links", "").strip()
@@ -262,6 +264,7 @@ def input_modifier(assistant_input, state):
         shared.processing_message = "*Typing...*"
         
         if assistant_input.lower().startswith("please expand"):
+            print("please expand command detected")
             shared.processing_message = "*Searching online...*"
             
             with open(additional_links_output_path, 'r', encoding='utf-8') as file:
