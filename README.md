@@ -1,5 +1,6 @@
 # LucidWebSearch (now with nougat ... OCR)
 CRCODE22:The original extension lets the user be in control I want the AI to be in control and be in charge of the searches it does without the user needing to write the commands.
+At this moment it gives errors if anyone can help me fix it greatly appreciated!
 Use at your own risk this is highly experimental! Giving AI Full control can be fun, educative, or dangerous.
 
 https://github.com/facebookresearch/nougat  
