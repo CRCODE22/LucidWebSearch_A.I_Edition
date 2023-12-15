@@ -236,7 +236,7 @@ def input_modifier(assistant_input, state):
     global additional_links_flag, fetch_length  # Use the global variable
     if search_access:
 
-        
+        assistant_msg = ""
         if assistant_msg.lower().startswith("search"):
             shared.processing_message = "*Searching online...*"
             # Split the input at the colon and use the part before the colon
