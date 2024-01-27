@@ -1,3 +1,4 @@
+Note you do not need to have your browser open side by side with the textgen ui (as the videos below show), you can minimize the search window if you like.
 # LucidWebSearch (now with nougat ... OCR)
 CRCODE22:The original extension lets the user be in control I want the AI to be in control and be in charge of the searches it does without the user needing to write the commands.
 At this moment it gives errors if anyone can help me fix it greatly appreciated!
